@@ -81,7 +81,9 @@ import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException;
 import com.kircherelectronics.fsensor.observer.SensorSubject;
 import com.kircherelectronics.fsensor.sensor.FSensor;
+import com.kircherelectronics.fsensor.sensor.acceleration.ComplementaryLinearAccelerationSensor;
 import com.kircherelectronics.fsensor.sensor.acceleration.KalmanLinearAccelerationSensor;
+import com.kircherelectronics.fsensor.sensor.gyroscope.ComplementaryGyroscopeSensor;
 import com.kircherelectronics.fsensor.sensor.gyroscope.GyroscopeSensor;
 import com.kircherelectronics.fsensor.sensor.gyroscope.KalmanGyroscopeSensor;
 
@@ -278,7 +280,7 @@ public class AllTrackerActivity extends AppCompatActivity implements SampleRende
   protected void onResume() {
     super.onResume();
 
-    fSensor = new KalmanGyroscopeSensor(this);
+    fSensor = new ComplementaryGyroscopeSensor(this);
     fSensor.register(sensorObserver);
     fSensor.start();
 
