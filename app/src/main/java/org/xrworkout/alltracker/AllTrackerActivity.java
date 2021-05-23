@@ -250,8 +250,8 @@ public class AllTrackerActivity extends AppCompatActivity implements SampleRende
 
   /** Menu button to launch feature specific settings. */
   protected boolean settingsMenuClick(MenuItem item) {
-    if (item.getItemId() == R.id.depth_settings) {
-      launchDepthSettingsMenuDialog();
+    if (item.getItemId() == R.id.location_settings) {
+      launchLocationSettingsMenuDialog();
       return true;
     } else if (item.getItemId() == R.id.server_connect) {
       launchConnectDialog();
@@ -514,6 +514,9 @@ public class AllTrackerActivity extends AppCompatActivity implements SampleRende
       current_imu_position[0] = p.tx();
       current_imu_position[1] = p.ty();
       current_imu_position[2] = p.tz();
+
+
+
     }
 
     if (godot_client != null)
@@ -600,7 +603,34 @@ public class AllTrackerActivity extends AppCompatActivity implements SampleRende
 
 
   /** Shows checkboxes to the user to facilitate toggling of depth-based effects. */
-  private void launchDepthSettingsMenuDialog() {
+  private void launchLocationSettingsMenuDialog() {
+      // Shows the dialog to the user.
+      String location = preferences.getString(getString(R.string.preference_location), "hip");
+
+      final EditText input = new EditText(this);
+      input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+      input.setText(location);
+
+      Resources resources = getResources();
+      new AlertDialog.Builder(this)
+              .setTitle(R.string.options_title_server_connect)
+              .setView(input)
+              .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialog, int which) {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(getString(R.string.preference_location), input.getText().toString());
+                    editor.apply();
+                  }
+              })
+              .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialog, int which) {
+                      dialog.cancel();
+                  }
+              })
+              .show();
+
   }
 
   /** Shows checkboxes to the user to facilitate toggling of depth-based effects. */
@@ -626,9 +656,10 @@ public class AllTrackerActivity extends AppCompatActivity implements SampleRende
                   editor.apply();
 
                   String server_url = String.format("ws://%s:21110",input.getText().toString());
+                  String location = preferences.getString(getString(R.string.preference_location), "hip");
                   Log.d(TAG, String.format("Connect to server: %s",server_url));
                   godot_client = new GodotARVRControllerClient(new URI(
-                          server_url));
+                          server_url), location);
                   godot_client.connect();
                 } catch(URISyntaxException e) {
                   Log.e(TAG, "URI syntax error");

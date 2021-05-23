@@ -20,17 +20,20 @@ import org.json.JSONObject;
  */
 public class GodotARVRControllerClient extends WebSocketClient {
     private final String TAG = "GodotARVRControllerClient";
+    private String location = "hip";
 
     enum TrackingSource {
         NONE, CAM, IMU, FULL;
     }
 
-    public GodotARVRControllerClient(URI serverUri, Draft draft) {
+    public GodotARVRControllerClient(URI serverUri, Draft draft)
+    {
         super(serverUri, draft);
     }
 
-    public GodotARVRControllerClient(URI serverURI) {
+    public GodotARVRControllerClient(URI serverURI, String location) {
         super(serverURI);
+        this.location = location;
     }
 
     public GodotARVRControllerClient(URI serverUri, Map<String, String> httpHeaders) {
@@ -44,7 +47,7 @@ public class GodotARVRControllerClient extends WebSocketClient {
         try {
             config_message.put("type", "config");
             config_message.put("tracker_id", "VRWorkoutAlltracker 1");
-            config_message.put("tracker_type", "foot/right");
+            config_message.put("tracker_type", location);
             send (config_message.toString());
         } catch (JSONException e)
         {
