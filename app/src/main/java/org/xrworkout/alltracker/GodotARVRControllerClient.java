@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.ar.core.Pose;
 import com.google.ar.core.TrackingState;
 
+import java.lang.System;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -21,6 +22,8 @@ import org.json.JSONObject;
 public class GodotARVRControllerClient extends WebSocketClient {
     private final String TAG = "GodotARVRControllerClient";
     private String location = "hip";
+    private String tracker_id = "VRWorkoutAlltracker 1";
+
 
     enum TrackingSource {
         NONE, CAM, IMU, FULL;
@@ -46,7 +49,7 @@ public class GodotARVRControllerClient extends WebSocketClient {
         JSONObject config_message = new JSONObject();
         try {
             config_message.put("type", "config");
-            config_message.put("tracker_id", "VRWorkoutAlltracker 1");
+            config_message.put("tracker_id", tracker_id);
             config_message.put("tracker_type", location);
             send (config_message.toString());
         } catch (JSONException e)
@@ -60,7 +63,7 @@ public class GodotARVRControllerClient extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        System.out.println("received: " + message);
+        Log.e(TAG,"received: " + message);
     }
 
     @Override
@@ -81,6 +84,8 @@ public class GodotARVRControllerClient extends WebSocketClient {
         JSONObject position_message = new JSONObject();
         try {
             position_message.put("type", "pos");
+            position_message.put("tracker_id", tracker_id);
+            position_message.put("ts", System.currentTimeMillis());
             position_message.put("x", p.tx());
             position_message.put("y", p.ty());
             position_message.put("z", p.tz());

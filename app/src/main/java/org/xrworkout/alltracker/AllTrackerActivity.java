@@ -213,7 +213,7 @@ public class AllTrackerActivity extends AppCompatActivity implements SampleRende
         current_imu_position[2] += (imu_linear_acceleration[2] * elapsed) / 1e9;
       }
       last_sensor_time = now;
-      Log.d(TAG, String.format("IMU Position (elapsed %d): %.5f/%.5f/%.5f", elapsed, current_imu_position[0], current_imu_position[1], current_imu_position[2]));
+      //Log.d(TAG, String.format("IMU Position (elapsed %d): %.5f/%.5f/%.5f", elapsed, current_imu_position[0], current_imu_position[1], current_imu_position[2]));
 
     }
   };
