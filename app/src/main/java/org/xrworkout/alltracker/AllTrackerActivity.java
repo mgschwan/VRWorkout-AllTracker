@@ -657,7 +657,7 @@ public class AllTrackerActivity extends AppCompatActivity implements SampleRende
                   editor.putString(getString(R.string.preference_address), input.getText().toString());
                   editor.apply();
 
-                  String server_url = String.format("ws://%s:21110",input.getText().toString());
+                  String server_url = String.format("ws://%s:21111",input.getText().toString());
                   String location = preferences.getString(getString(R.string.preference_location), "hip");
                   Log.d(TAG, String.format("Connect to server: %s",server_url));
                   godot_client = new GodotARVRControllerClient(new URI(
